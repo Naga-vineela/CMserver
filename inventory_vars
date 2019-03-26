@@ -1,0 +1,15 @@
+[Webserver]
+172.31.25.21
+localhost package_name=git
+
+[Webserver:vars]
+package_name=tree
+
+[Middleware]
+172.31.19.157
+
+[DBServer]
+172.31.19.14
+
+[hostname]
+localhost

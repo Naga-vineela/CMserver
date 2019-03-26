@@ -1,0 +1,5 @@
+---
+- hosts: Middleware
+  become: yes
+  roles:
+    - role: gameoflife-role

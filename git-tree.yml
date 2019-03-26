@@ -1,0 +1,14 @@
+---
+- hosts: Webserver
+  become: yes
+  tasks:
+  - name: install tree and tree
+    yum: 
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - git
+      - tree
+
+
+      

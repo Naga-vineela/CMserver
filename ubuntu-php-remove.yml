@@ -1,0 +1,23 @@
+---
+- hosts: Middleware
+  become: yes
+  tasks:
+  - name: "system check"
+    fail:
+      msg: " this is on ubuntu machine "
+    when:
+     - ansible_os_family == "windows"
+  - name: install apache2
+    apt:
+      name: apache2
+      update_cache: yes
+      state: absent
+  - name: install php
+    apt:
+      name: "{{ item }}"
+      state: absent
+    with_items:
+      - php
+      - php-mysql
+      
+

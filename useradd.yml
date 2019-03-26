@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: user creation
+      user:
+        name: "{{ user }}"
+        password: ansible
+        state: present
+    - name: change password authentication in sshd
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication.*no'
+        line: 'PasswordAuthentication=yes'
+      notify: restart_sshd
+    - name: add user to sudoers
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        insertafter: '^%wheel'
+        line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
+    - name: copy ssh-key
+      authorized_key:
+        key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+        user: "{{ user }}"
+        state: present
+  handlers:
+    - name: restart_sshd
+      service:
+        name: sshd
+        state: restarted
+   
